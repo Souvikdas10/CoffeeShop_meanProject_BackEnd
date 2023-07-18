@@ -3,7 +3,8 @@ const itemModel = require('../model/coffeeItem');
 const ContactModel = require('../model/contact');
 const config=require('../config/config')
 const bcryptjs = require('bcryptjs');
-const jwt=require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+
 
 
 
@@ -19,14 +20,13 @@ const SecurePassword = async (password) => {
     }
 }
 
-const CreateToken=async(id)=>{
-    try{ 
-      const token= await jwt.sign({_id:id},config.secrect_key,{expiresIn:"1h"});
-      return token;
-       
-      }catch(error){
-          res.status(400).json(error.message)
-      }
+const CreateToken = async (id) => {
+    try {
+        const token = await jwt.sign({ _id: id }, config.secrect_key, { expiresIn: "5m" });
+        return token;
+    } catch (error) {
+        res.status(400).json(error.message)
+    }
 }
 exports.addUser = async (req, res) => {
     try {
@@ -57,22 +57,24 @@ exports.addUser = async (req, res) => {
 //====================================Users Login===========================================================
 
 exports.login = async (req, res) => {
+
     try {
-        const { email, password } = req.body
-    if (!(email && password)) {
-        return res.status(201).json("All input is required");
-     }
+        const { email, password } = req.body;
+
+        if (!(email && password)) {
+            return res.status(201).json({ success: false, message: "All input are required" })
+        }
         const users = await UserModel.findOne({ email })
         if (users && (await bcryptjs.compare(password, users.password))) {
-        const tokendata = await CreateToken(users._id)
-        res.status(200).json({ success: true, msg: "Login......", 'user': users, status: true,"token":tokendata })
+            const token = await CreateToken(users._id)
+            return res.status(200).json({ success: true, msg: "Login....", "user": users, status: 200, token: token });
         }
-         res.status(400).json({success:false,message:"Invalid Credentials"});
-
-    } catch (error) {
-        res.status(201).json({ success: false, msg: "User not Login" })
-
+        return res.status(201).json({ success: false, message: "Invalid Credentials" });
     }
+    catch (error) {
+        console.log(error);
+    }
+
     // try {
     //     const { email, password } = req.body;
     //     if (!(email && password)) {
@@ -88,10 +90,9 @@ exports.login = async (req, res) => {
     //     console.log(err);
     // }
 }
-exports.test=(req,res)=>{
-    res.send({message:"you are Authenticated User"});
-
-}
+// exports.test=(req,res)=>{
+//     res.send({message:"you are Authenticated User"});
+// }
 
 //====================================Get Users==========================================================
 

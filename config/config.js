@@ -1,6 +1,5 @@
 
-const config={
-    secrect_key:"welcomeToCoffeShope"
+const config = {
+    secrect_key: "welcomeToCoffeShope"
 }
-
-module.exports=config
+module.exports = config
