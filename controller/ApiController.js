@@ -1,9 +1,9 @@
 const UserModel = require('../model/user');
 const itemModel = require('../model/coffeeItem');
 const ContactModel = require('../model/contact');
+const config=require('../config/config')
 const bcryptjs = require('bcryptjs');
-const nodemailer = require("nodemailer");
-const randomstring = require("randomstring");
+const jwt=require('jsonwebtoken')
 
 
 
@@ -19,6 +19,15 @@ const SecurePassword = async (password) => {
     }
 }
 
+const CreateToken=async(id)=>{
+    try{ 
+      const token= await jwt.sign({_id:id},config.secrect_key,{expiresIn:"1h"});
+      return token;
+       
+      }catch(error){
+          res.status(400).json(error.message)
+      }
+}
 exports.addUser = async (req, res) => {
     try {
         const Passwordhash = await SecurePassword(req.body.password)
@@ -36,7 +45,8 @@ exports.addUser = async (req, res) => {
             res.status(400).json({ success: false, message: "email already exist" });
         } else {
             const result = await user.save()
-            res.status(200).json({ success: true, msg: "User Registered Successfully", data: result, status: 200 })
+            const token=await CreateToken(result._id);
+            res.status(200).json({ success: true, msg: "User Registered Successfully", data: result, status: 200,'token':token })
         }
     } catch (error) {
         console.log(error);
@@ -49,15 +59,39 @@ exports.addUser = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body
-
-        const Users = await UserModel.findOne({ email })
-        if (Users && (await bcryptjs.compare(password, Users.password))) {
-            return res.status(200).json({ success: true, msg: "Login......", 'user': Users, status: true })
+    if (!(email && password)) {
+        return res.status(201).json("All input is required");
+     }
+        const users = await UserModel.findOne({ email })
+        if (users && (await bcryptjs.compare(password, users.password))) {
+        const tokendata = await CreateToken(users._id)
+        res.status(200).json({ success: true, msg: "Login......", 'user': users, status: true,"token":tokendata })
         }
+         res.status(400).json({success:false,message:"Invalid Credentials"});
+
     } catch (error) {
         res.status(201).json({ success: false, msg: "User not Login" })
 
     }
+
+    // try {
+    //     const { email, password } = req.body;
+    //     if (!(email && password)) {
+    //        return res.status(400).json("All input is required");
+    //     }
+    //     const users = await UserModel.findOne({ email });
+    //     if (users && (await bcryptjs.compare(password, users.password))) {
+    //         const tokendata = await CreateToken(users._id)
+    //           res.status(200).json({ success:true,"user": users, status:true, "token": tokendata });
+    //     }
+    //      res.status(400).json({success:false,message:"Invalid Credentials"});
+    // } catch (err) {
+    //     console.log(err);
+    // }
+}
+exports.test=(req,res)=>{
+    res.send({message:"you are Authenticated User"});
+
 }
 
 //====================================Get Users==========================================================

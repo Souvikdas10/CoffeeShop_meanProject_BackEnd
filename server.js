@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 2100
 const ApiRoute = require('./routes/apiRoute')
 const AdminRoute = require('./routes/adminRouter')
+const auth=require('./middleware/userAuth')
 
 const dbLink= "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
 
@@ -30,6 +31,7 @@ const fileStorage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
     if (file.mimetype.includes("png") ||
         file.mimetype.includes("jpg") ||
+        file.mimetype.includes("webp") ||
         file.mimetype.includes("jpeg")) {
         cb(null, true)
     }
@@ -49,6 +51,7 @@ app.set('views','views');
 
 app.use(ApiRoute)
 app.use(AdminRoute)
+app.use(auth.veryfyToken)
 
 app.use(express.static(path.join(__dirname,'public')));
 
