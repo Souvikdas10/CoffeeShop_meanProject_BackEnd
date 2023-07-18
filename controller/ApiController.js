@@ -73,7 +73,6 @@ exports.login = async (req, res) => {
         res.status(201).json({ success: false, msg: "User not Login" })
 
     }
-
     // try {
     //     const { email, password } = req.body;
     //     if (!(email && password)) {
