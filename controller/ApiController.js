@@ -74,21 +74,7 @@ exports.login = async (req, res) => {
     catch (error) {
         console.log(error);
     }
-
-    // try {
-    //     const { email, password } = req.body;
-    //     if (!(email && password)) {
-    //        return res.status(400).json("All input is required");
-    //     }
-    //     const users = await UserModel.findOne({ email });
-    //     if (users && (await bcryptjs.compare(password, users.password))) {
-    //         const tokendata = await CreateToken(users._id)
-    //           res.status(200).json({ success:true,"user": users, status:true, "token": tokendata });
-    //     }
-    //      res.status(400).json({success:false,message:"Invalid Credentials"});
-    // } catch (err) {
-    //     console.log(err);
-    // }
+   
 }
 // exports.test=(req,res)=>{
 //     res.send({message:"you are Authenticated User"});
