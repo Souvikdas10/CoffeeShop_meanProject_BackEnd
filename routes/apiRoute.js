@@ -2,8 +2,9 @@ const express = require('express');
 const Route = express.Router()
 const multer = require('multer');
 const path = require('path')
+// const jwt=require('jsonwebtoken')
 const ApiController = require('../controller/ApiController')
-const auth = require('../middleware/userAuth')
+// const auth = require('../middleware/userAuth')
 
 
 //============users Reg and Login===========

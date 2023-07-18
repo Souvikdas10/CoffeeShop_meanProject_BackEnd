@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path =require('path')
 const multer=require('multer')
+// const jwt=require('jsonwebtoken')
 const app = express();
 const port = process.env.PORT || 2100
 const ApiRoute = require('./routes/apiRoute')
 const AdminRoute = require('./routes/adminRouter')
-const auth=require('./middleware/userAuth')
+// const auth=require('./middleware/userAuth')
 
 const dbLink= "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
 
@@ -51,7 +52,7 @@ app.set('views','views');
 
 app.use(ApiRoute)
 app.use(AdminRoute)
-app.use(auth.veryfyToken)
+// app.use(auth.veryfyToken)
 
 app.use(express.static(path.join(__dirname,'public')));
 
