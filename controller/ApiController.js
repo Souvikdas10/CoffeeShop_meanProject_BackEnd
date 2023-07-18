@@ -120,3 +120,12 @@ exports.item = async (req, res) => {
     }
 }
 
+
+//====================================profile============================================================
+exports.profile=async(req,res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
