@@ -25,10 +25,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: true
     },
-    token:{
-        type:String,
-        default:''
-    }
+    // token:{
+    //     type:String,
+    //     default:''
+    // }
 }, { timestamps: true })
 const UserModel = new mongoose.model('user', UserSchema);
 module.exports = UserModel;
