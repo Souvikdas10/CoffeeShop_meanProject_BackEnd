@@ -113,7 +113,8 @@ exports.item = async (req, res) => {
     try {
 
         const item = await itemModel.find()
-        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: item })
+        // const item = await itemModel.find(req.params._id)
+        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: item , status:200 })
     } catch (error) {
         res.status(201).json({ success: false, msg: "Item Not fetch" })
 
@@ -121,11 +122,17 @@ exports.item = async (req, res) => {
 }
 
 
+
 //====================================profile============================================================
-// exports.profile=async(req,res)=>{
-//     try {
+
+exports.single=async(req,res)=>{
+    try {
+        const single_id= await itemModel.findById(req.params.id)
+        console.log(single_id);
+        res.status(200).json({success:true,msg:'single data fetch successfilly..!',data:single_id , status:200})
         
-//     } catch (error) {
+    } catch (error) {
+        res.status(201).json({success:false, msg:'data not fetched..!'})
         
-//     }
-// }
+    }
+}
