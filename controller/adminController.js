@@ -2,6 +2,73 @@ const UserModel = require('../model/user');
 const ContactModel = require('../model/contact');
 const itemModel = require('../model/coffeeItem');
 const path=require('path');
+const bcrypt=require('bcryptjs')
+const jwt=require('jsonwebtoken')
+const nodemailer=require('nodemailer')
+
+
+exports.login = (req, res) => {
+    res.render('./admin/login', {
+        title: "admin || login",
+        // message: req.flash('message'),
+
+    })
+}
+
+exports.logincreate = (req, res) => {
+    UserModel.findOne({
+        email: req.body.email
+    }, (err, data) => {
+        if (data) {
+            if (data.isAdmin == true) {
+                const haspassword = data.password
+                if (bcrypt.compareSync(req.body.password, haspassword)) {
+                    const token = jwt.sign({
+                        id: data._id,
+                        name: data.name,
+                        pic: data.image
+                    }, 'coffeeshop@2023', { expiresIn: '1h' })
+                    res.cookie('AdminToken', token)
+                    if (req.body.rememberme) {
+                        res.cookie('email', req.body.email)
+                        res.cookie('password', req.body.password)
+                    }
+                    console.log(data);
+                    res.redirect('/admin/dashboard')
+                } else {
+                    console.log("Incorrect password");
+                    res.redirect('/admin/')
+                }
+            } else {
+                req.flash('message', "You are not an Admin")
+                res.redirect('/admin/')
+            }
+
+        } else {
+            console.log("Incorrect email");
+            res.redirect('/admin/')
+        }
+    })
+}
+
+
+exports.adminauth = (req, res, next) => {
+    if (!req.admin) {
+        console.log(req.admin,"aaa");
+        next();
+    } else {
+        console.log(req.admin,"bbb");
+        // req.flash('message', "can not access this page ..please login first")
+        console.log("can not access this page ..please login first")
+        res.redirect('/admin/')
+    }
+}
+
+
+exports.logout = (req, res) => {
+    res.clearCookie('AdminToken')
+    res.redirect('/admin/')
+}
 
 
 
@@ -11,6 +78,7 @@ exports.dashboard = (req, res) => {
             itemModel.find().then(result2=>{
                 res.render('admin/dashboard', {
                     title: 'Admin || Dashboard',
+                    data:req.admin,
                     Users: result,
                     contact: result1,
                     item:result2

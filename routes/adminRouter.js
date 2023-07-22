@@ -3,16 +3,21 @@ const Route = express.Router()
 
 const AdminController = require('../controller/adminController');
 
-Route.get('/admin/',AdminController.dashboard)
+Route.get('/admin/',AdminController.login)
+Route.post('/admin/logincreate',AdminController.logincreate)
 
-Route.get('/admin/users',AdminController.Users)
+Route.get('/admin/dashboard',AdminController.adminauth,AdminController.dashboard)
+
+Route.get('/admin/logout',AdminController.logout)
+
+Route.get('/admin/users',AdminController.adminauth,AdminController.Users)
 
 Route.get('/admin/deactiveuser/:id',AdminController.deactiveuser)
 Route.get('/admin/activeuser/:id',AdminController.activeuser)
 
-Route.get('/admin/contact',AdminController.contact)
+Route.get('/admin/contact',AdminController.adminauth,AdminController.contact)
 
-Route.get('/admin/item',AdminController.item)
+Route.get('/admin/item',AdminController.adminauth,AdminController.item)
 Route.post('/admin/itemCreate',AdminController.itemCreate)
 
 Route.get('/admin/activeitem/:id',AdminController.activeItem)
