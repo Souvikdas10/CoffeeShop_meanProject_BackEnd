@@ -8,9 +8,14 @@ const nodemailer = require('nodemailer')
 
 
 exports.login = (req, res) => {
+    loginData = {}
+    loginData.email = (req.cookies.email) ? req.cookies.email : undefined
+    loginData.password = (req.cookies.password) ? req.cookies.password : undefined
     res.render('./admin/login', {
         title: "admin || login",
         message: req.flash('message'),
+        data1: loginData,
+        data: req.admin,
 
     })
 }
@@ -26,7 +31,7 @@ exports.logincreate = (req, res) => {
                     const token = jwt.sign({
                         id: data._id,
                         name: data.name,
-                        pic: data.image
+                        image: data.image
                     }, 'coffeeshop@2023', { expiresIn: '1h' })
                     res.cookie('AdminToken', token)
                     if (req.body.rememberme) {
@@ -94,6 +99,7 @@ exports.Users = (req, res) => {
         // console.log("all user:",result);
         res.render('admin/users', {
             title: 'Users',
+            data: req.admin,
             displayData: result
         })
     })
@@ -125,6 +131,7 @@ exports.contact = (req, res) => {
     ContactModel.find().then(result => {
         res.render('admin/contact', {
             title: 'Contact Page',
+            data: req.admin,
             displayData: result
         })
     })
