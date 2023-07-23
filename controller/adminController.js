@@ -5,7 +5,7 @@ const path = require('path');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
-
+const flash=require('connect-flash')
 
 exports.login = (req, res) => {
     loginData = {}
