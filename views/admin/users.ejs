@@ -45,7 +45,7 @@
                                             <th>Contact</th>
                                             <th>Account created</th>
                                             <th>Status</th>
-                                            <th>Operation</th>
+                                            <th colspan="2">Operation</th>
                                         </tr>
                                     </thead>
                                    
@@ -65,7 +65,7 @@
                                             <% if(data2.status) {%>
                                                 <td>
                                                     <a href=" /admin/deactiveuser/<%=data2._id %>" class="btn
-                                                    btn-danger">Deactive</a>
+                                                    btn-warning">Deactive</a>
                                             </td>
                                             <% } else{%>
                                                 <td>
@@ -73,7 +73,8 @@
                                                         class="btn btn-success">Active</a>
                                                 </td>
                                                 <% } %>
-                                            
+                                            <td><a href="/admin/delete/<%= data2._id%>" 
+                                                class="btn btn-danger">Delete</a></td>
                                         </tr>
                                         <%}}%>
                                         

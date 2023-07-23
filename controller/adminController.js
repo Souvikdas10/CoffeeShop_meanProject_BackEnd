@@ -1,16 +1,16 @@
 const UserModel = require('../model/user');
 const ContactModel = require('../model/contact');
 const itemModel = require('../model/coffeeItem');
-const path=require('path');
-const bcrypt=require('bcryptjs')
-const jwt=require('jsonwebtoken')
-const nodemailer=require('nodemailer')
+const path = require('path');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 
 exports.login = (req, res) => {
     res.render('./admin/login', {
         title: "admin || login",
-        // message: req.flash('message'),
+        message: req.flash('message'),
 
     })
 }
@@ -34,6 +34,7 @@ exports.logincreate = (req, res) => {
                         res.cookie('password', req.body.password)
                     }
                     console.log(data);
+                    req.flash('message', "You are Login Successfully")
                     res.redirect('/admin/dashboard')
                 } else {
                     console.log("Incorrect password");
@@ -54,12 +55,12 @@ exports.logincreate = (req, res) => {
 
 exports.adminauth = (req, res, next) => {
     if (!req.admin) {
-        console.log(req.admin,"aaa");
+        console.log(req.admin, "aaa");
         next();
     } else {
-        console.log(req.admin,"bbb");
-        // req.flash('message', "can not access this page ..please login first")
-        console.log("can not access this page ..please login first")
+        console.log(req.admin, "bbb");
+        req.flash('message', "can not access this page ..please login first")
+        // console.log("can not access this page ..please login first")
         res.redirect('/admin/')
     }
 }
@@ -75,13 +76,13 @@ exports.logout = (req, res) => {
 exports.dashboard = (req, res) => {
     UserModel.find().then(result => {
         ContactModel.find().then(result1 => {
-            itemModel.find().then(result2=>{
+            itemModel.find().then(result2 => {
                 res.render('admin/dashboard', {
                     title: 'Admin || Dashboard',
-                    data:req.admin,
+                    data: req.admin,
                     Users: result,
                     contact: result1,
-                    item:result2
+                    item: result2
                 })
             })
         })
@@ -131,10 +132,13 @@ exports.contact = (req, res) => {
 
 exports.item = (req, res) => {
     itemModel.find().then(result => {
-    // console.log("all items:",result);
+        // console.log("all items:",result);
         res.render('admin/item', {
             title: 'Item Page',
-            displayData: result
+            displayData: result,
+            message: req.flash('message'),
+            error: req.flash('error')
+
         })
     })
 }
@@ -144,20 +148,56 @@ exports.itemCreate = (req, res) => {
     itemModel({
         itemName: req.body.itemName,
         // image: image.path,
-        image:req.file.filename,
+        image: req.file.filename,
         itemDetails: req.body.itemDetails,
         price: req.body.price
     }).save().then(result => {
         console.log(result);
-        console.log("Item added successfull..")
+        // console.log("Item added successfull..")
+        req.flash('message', "Item added successfull..")
 
         res.redirect('/admin/item')
     }).catch(err => {
         console.log(err);
-        console.log('error',"item not added ..")
+        req.flash('error', "item not added ..")
         res.redirect('/admin/item')
 
     })
+}
+
+exports.itemEdit = (req, res) => {
+    itemId = req.params.id;
+    itemModel.findById(itemId).then(result => {
+        res.render('admin/itemEdit', {
+            title: 'Item Page',
+            itemEditData: result
+        })
+    }).catch((err) => {
+        console.log(err);
+    })
+}
+
+exports.itemUpdate = (req, res) => {
+    const st_id = req.body.itemId
+    const itemName = req.body.itemName
+    const itemDetails = req.body.itemDetails
+    const price = req.body.price
+
+    itemModel.findById(st_id).then((result) => {
+        result.itemName = itemName
+        result.itemDetails = itemDetails
+        result.price = price
+        result.image = req.file.filename
+        result.save().then(data => {
+            res.redirect('/admin/item')
+            console.log(data, "Item Update Successfully");
+        }).catch(err => {
+            console.log(err);
+        })
+    }).catch(err => {
+        console.log(err);
+    })
+
 }
 
 exports.activeItem = (req, res) => {
@@ -177,5 +217,17 @@ exports.deactiveItem = (req, res) => {
         res.redirect('/admin/item')
     }).catch(err => {
         console.log(err);
+    })
+}
+
+
+
+exports.deletee = (req, res) => {
+    const sid = req.params.id
+    UserModel.deleteOne({ _id: sid }).then(del => {
+        res.redirect('/admin/users')
+        console.log(del, "data deleted successfully")
+    }).catch(err => {
+        console.log(err)
     })
 }

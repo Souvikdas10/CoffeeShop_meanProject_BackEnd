@@ -2,8 +2,11 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path =require('path')
-const multer=require('multer')
+const path = require('path')
+const multer = require('multer')
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieparser = require('cookie-parser');
 // const jwt=require('jsonwebtoken')
 const app = express();
 const port = process.env.PORT || 2100
@@ -11,7 +14,7 @@ const ApiRoute = require('./routes/apiRoute')
 const AdminRoute = require('./routes/adminRouter')
 // const auth=require('./middleware/userAuth')
 
-const dbLink= "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
+const dbLink = "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
 
 
 app.use(cors());
@@ -19,6 +22,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
+app.use(flash());
+app.use(cookieparser());
+app.use(session({
+    cookie: { maxAge: 5000 },
+    secret: 'nodejs',
+    resave: false,
+    saveUninitialized: false
+}))
 app.use('/upload', express.static(path.join(__dirname, 'upload')))
 
 const fileStorage = multer.diskStorage({
@@ -47,14 +58,14 @@ app.use(multer({
 }).single('image'))
 
 
-app.set('view engine','ejs');
-app.set('views','views');
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 app.use(ApiRoute)
 app.use(AdminRoute)
 // app.use(auth.veryfyToken)
 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect(dbLink, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {

@@ -17,8 +17,16 @@ Route.get('/admin/activeuser/:id',AdminController.activeuser)
 
 Route.get('/admin/contact',AdminController.adminauth,AdminController.contact)
 
+
 Route.get('/admin/item',AdminController.adminauth,AdminController.item)
 Route.post('/admin/itemCreate',AdminController.itemCreate)
+Route.get('/admin/edit/:id',AdminController.itemEdit)
+Route.post('/admin/itemUpdate',AdminController.itemUpdate)
+
+
+Route.get('/admin/delete/:id', AdminController.deletee)
+
+
 
 Route.get('/admin/activeitem/:id',AdminController.activeItem)
 Route.get('/admin/deactiveitem/:id',AdminController.deactiveItem)
