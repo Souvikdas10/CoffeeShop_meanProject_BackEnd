@@ -123,7 +123,7 @@ exports.item = async (req, res) => {
 
 
 
-//====================================profile============================================================
+//====================================single data fatch============================================================
 
 exports.single=async(req,res)=>{
     try {
@@ -133,6 +133,21 @@ exports.single=async(req,res)=>{
         
     } catch (error) {
         res.status(201).json({success:false, msg:'data not fetched..!'})
+        
+    }
+}
+
+//====================================profile============================================================
+
+exports.profile=async(req,res)=>{
+    try {
+        const users_Profile= await UserModel.findById(req.params.id)
+        console.log(users_Profile);
+        res.status(200).json({success:true,msg:'profile fetch successfilly..!',data:users_Profile , status:200})
+        
+    } catch (error) {
+        console.log(error);
+        res.status(201).json({success:false, msg:'profile not fetched..!'})
         
     }
 }

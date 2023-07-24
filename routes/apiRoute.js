@@ -15,7 +15,7 @@ Route.post('/login', ApiController.login)
 Route.get('/getUsers',ApiController.getUsers)
 Route.get('/getItem',ApiController.item)
 Route.get('/single/:id',ApiController.single)
-
+Route.get('/profile/:id',ApiController.profile)
 
 //============Contact===========
 Route.post('/contact',ApiController.contact)
