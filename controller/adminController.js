@@ -110,7 +110,7 @@ exports.Users = (req, res) => {
 exports.activeuser = (req, res) => {
     const id = req.params.id
     UserModel.findByIdAndUpdate(id, { status: true }).then(result => {
-        console.log(result, "Deactived Users");
+        console.log(result, "actived Users");
         res.redirect('/admin/users')
     }).catch(err => {
         console.log(err);
