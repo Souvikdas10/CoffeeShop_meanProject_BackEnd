@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path')
 const multer = require('multer')
-const flash=require('connect-flash')
+const flash = require('connect-flash')
 const session = require('express-session');
 const cookieparser = require('cookie-parser');
 // const jwt=require('jsonwebtoken')
@@ -16,6 +16,12 @@ const AdminRoute = require('./routes/adminRouter')
 
 const dbLink = "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    next();
+});
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

@@ -62,14 +62,14 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
 
         if (!(email && password)) {
-            return res.status(201).json({ success: false, message: "All input are required" })
+            return res.status(401).json({ success: false, message: "All input are required", status:401 })
         }
         const users = await UserModel.findOne({ email })
         if (users && (await bcryptjs.compare(password, users.password))) {
             const token = await CreateToken(users._id)
             return res.status(200).json({ success: true, msg: "Login....", "user": users, status: 200, token: token });
         }
-        return res.status(201).json({ success: false, message: "Invalid Credentials" });
+        return res.status(401).json({ success: false, message: "Invalid Credentials", status:401 });
     }
     catch (error) {
         console.log(error);
