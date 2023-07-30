@@ -1,6 +1,7 @@
 const UserModel = require('../model/user');
 const itemModel = require('../model/coffeeItem');
 const ContactModel = require('../model/contact');
+const AddModel=require('../model/add')
 const config=require('../config/config')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -149,5 +150,32 @@ exports.profile=async(req,res)=>{
         console.log(error);
         res.status(201).json({success:false, msg:'profile not fetched..!'})
         
+    }
+}
+//====================================ADD TO CARD============================================================
+
+exports.Cart = async (req, res) => {
+    try {
+        const AddTo = await new AddModel({
+            customer_id: req.body.customer_id,
+            item_id:req.body.item_id,
+            quenty: req.body.quenty,
+            // image: req.body.image,
+        })
+        const AddToresult = await AddTo.save()
+        res.status(200).json({ success: true, msg: "Item Added Successfully", data: AddToresult, status: 200 })
+    } catch (error) {
+        console.log(error);
+        res.status(201).json({ success: false, msg: "Item Not Added" })
+
+    }
+}
+exports.getCART = async (req, res) => {
+    try {
+        const  getcart= await AddModel.find()
+        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: getcart, status: true })
+    } catch (error) {
+        res.status(201).json({ success: false, msg: "Item Not fetch" })
+
     }
 }

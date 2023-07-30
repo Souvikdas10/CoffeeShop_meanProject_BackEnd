@@ -22,5 +22,8 @@ Route.post('/contact',ApiController.contact)
 
 // Route.get('/test',ApiController.auth,ApiController.test);
 
+//============ADD TO CARD===========
+Route.post('/addcart',ApiController.Cart)
+Route.get('/getcart',ApiController.getCART)
 
 module.exports = Route;
