@@ -70,6 +70,10 @@ UserModel.findOne({
                     name:data.name,
                     image:data.image
                 }, 'coffeeshop@2023' ,{expiresIn:'1h'})
+
+                console.log("show the name",data.name);
+                console.log("show the image",data.image);
+
                 res.cookie('AdminToken',token)
                 if (req.body.rememberme) {
                     res.cookie('email',req.body.email)
