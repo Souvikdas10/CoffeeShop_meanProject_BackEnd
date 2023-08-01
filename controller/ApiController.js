@@ -154,21 +154,47 @@ exports.profile=async(req,res)=>{
 }
 //====================================ADD TO CARD============================================================
 
-exports.Cart = async (req, res) => {
+// exports.Cart = async (req, res) => {
+//     try {
+//         const AddTo = await new AddModel({
+//             customer_id: req.body.customer_id,
+//             item_id:req.body.item_id,
+//             quenty: req.body.quenty,
+//             // image: req.body.image,
+//         })
+//         const AddToresult = await AddTo.save()
+//         res.status(200).json({ success: true, msg: "Item Added Successfully", data: AddToresult, status: 200 })
+//     } catch (error) {
+//         console.log(error);
+//         res.status(201).json({ success: false, msg: "Item Not Added" })
+
+//     }
+// }
+exports.postAddToCart=async(req,res)=>{            
     try {
-        const AddTo = await new AddModel({
-            customer_id: req.body.customer_id,
-            item_id:req.body.item_id,
-            quenty: req.body.quenty,
-            // image: req.body.image,
-        })
-        const AddToresult = await AddTo.save()
-        res.status(200).json({ success: true, msg: "Item Added Successfully", data: AddToresult, status: 200 })
+        const userId=req.body.user._id;
+        const pId=req.body.productId;
+        const quantity=req.body.quantity;
+        console.log("after add to cart: Item:",pId, "Q:",quantity,"Id:",userId);
+        const cartValue=[];
+      const AddTo=await AddModel.find({userId:userId,productId:pId})
+      .then(cartData=>{
+        console.log("cartdata:",cartData);
+        if (cartData=='') {
+            itemModel.findById(pId).then(itemforcart=>{
+                console.log("product For cart:",itemforcart);
+                cartValue.push(itemforcart)
+                const cartitem=new AddModel({productId:pId,quantity:quantity,userId:userId,cart:cartValue})
+                  cartitem.save()
+                
+            })
+        }
+      })
     } catch (error) {
         console.log(error);
-        res.status(201).json({ success: false, msg: "Item Not Added" })
-
     }
+   
+
 }
 exports.getCART = async (req, res) => {
     try {

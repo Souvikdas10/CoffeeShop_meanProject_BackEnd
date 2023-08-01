@@ -1,18 +1,23 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const AddSchema = new Schema({
-    customer_id: {
+    productId: {
         type: String,
         required: true
     },
-    item_id: {
+    userId: {
         type: String,
         required: true
     },
-    quenty: {
+    quantity: {
         type: Number,
         required: true
     },
+    cart:[{
+        type:Object,
+        required:true
+    }]
+
     // image: {
     //     type: String,
     //     required: true
