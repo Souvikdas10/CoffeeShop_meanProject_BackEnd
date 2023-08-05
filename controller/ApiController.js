@@ -1,7 +1,7 @@
 const UserModel = require('../model/user');
 const itemModel = require('../model/coffeeItem');
 const ContactModel = require('../model/contact');
-const AddModel=require('../model/add')
+// const AddModel=require('../model/add')
 const config=require('../config/config')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -170,38 +170,38 @@ exports.profile=async(req,res)=>{
 
 //     }
 // }
-exports.postAddToCart=async(req,res)=>{            
-    try {
-        const userId=req.body.user._id;
-        const pId=req.body.productId;
-        const quantity=req.body.quantity;
-        console.log("after add to cart: Item:",pId, "Q:",quantity,"Id:",userId);
-        const cartValue=[];
-      const AddTo=await AddModel.find({userId:userId,productId:pId})
-      .then(cartData=>{
-        console.log("cartdata:",cartData);
-        if (cartData=='') {
-            itemModel.findById(pId).then(itemforcart=>{
-                console.log("product For cart:",itemforcart);
-                cartValue.push(itemforcart)
-                const cartitem=new AddModel({productId:pId,quantity:quantity,userId:userId,cart:cartValue})
-                  cartitem.save()
+// exports.postAddToCart=async(req,res)=>{            
+//     try {
+//         const userId=req.body.user._id;
+//         const pId=req.body.productId;
+//         const quantity=req.body.quantity;
+//         console.log("after add to cart: Item:",pId, "Q:",quantity,"Id:",userId);
+//         const cartValue=[];
+//       const AddTo=await AddModel.find({userId:userId,productId:pId})
+//       .then(cartData=>{
+//         console.log("cartdata:",cartData);
+//         if (cartData=='') {
+//             itemModel.findById(pId).then(itemforcart=>{
+//                 console.log("product For cart:",itemforcart);
+//                 cartValue.push(itemforcart)
+//                 const cartitem=new AddModel({productId:pId,quantity:quantity,userId:userId,cart:cartValue})
+//                   cartitem.save()
                 
-            })
-        }
-      })
-    } catch (error) {
-        console.log(error);
-    }
+//             })
+//         }
+//       })
+//     } catch (error) {
+//         console.log(error);
+//     }
    
 
-}
-exports.getCART = async (req, res) => {
-    try {
-        const  getcart= await AddModel.find()
-        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: getcart, status: true })
-    } catch (error) {
-        res.status(201).json({ success: false, msg: "Item Not fetch" })
+// }
+// exports.getCART = async (req, res) => {
+//     try {
+//         const  getcart= await AddModel.find()
+//         res.status(200).json({ success: true, msg: "Item fetch Successfully", data: getcart, status: true })
+//     } catch (error) {
+//         res.status(201).json({ success: false, msg: "Item Not fetch" })
 
-    }
-}
+//     }
+// }
