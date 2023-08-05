@@ -35,6 +35,11 @@
 
                                     <div class="card shadow mb-4">
                                         <div class="card-header py-3">
+                                            <%if(message.length>0){%>
+                                                <div class="alert alert-danger" role="alert">
+                                                    <%=message%>
+                                                  </div>
+                                                  <%}%>
                                             <h6 style="text-align: center;"> EDIT ITEM  </h6>
                                             <div class="modal-body">
                                                 <form action="/admin/itemUpdate" method="post"

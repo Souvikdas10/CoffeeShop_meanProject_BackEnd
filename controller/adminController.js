@@ -218,7 +218,9 @@ exports.itemEdit = (req, res) => {
     itemModel.findById(itemId).then(result => {
         res.render('admin/itemEdit', {
             title: 'Item Page',
-            itemEditData: result
+            itemEditData: result,
+            message: req.flash('message'),
+
         })
     }).catch((err) => {
         console.log(err);
@@ -238,7 +240,8 @@ exports.itemUpdate = (req, res) => {
         result.image = req.file.filename
         result.save().then(data => {
             res.redirect('/admin/item')
-            console.log(data, "Item Update Successfully");
+            // console.log(data, "Item Update Successfully");
+            res.flash(data, "Item Update Successfully");
         }).catch(err => {
             console.log(err);
         })
