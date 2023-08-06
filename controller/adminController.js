@@ -20,93 +20,55 @@ exports.login = (req, res) => {
     })
 }
 
-// exports.logincreate = (req, res) => {
-//     UserModel.findOne({
-//         email: req.body.email
-//     }, (err, data) => {
-//         if (data) {
-//             if (data.isAdmin == true) {
-//                 const haspassword = data.password
-//                 if (bcrypt.compareSync(req.body.password, haspassword)) {
-//                     const token = jwt.sign({
-//                         id: data._id,
-//                         name: data.name,
-//                         image: data.image
-//                     }, 'coffeeshop@2023', { expiresIn: '1h' })
-//                     res.cookie('AdminToken', token)
-//                     if (req.body.rememberme) {
-//                         res.cookie('email', req.body.email)
-//                         res.cookie('password', req.body.password)
-//                     }
-//                     console.log(data);
-//                     req.flash('message', "You are Login Successfully")
-//                     res.redirect('/admin/dashboard')
-//                 } else {
-//                     console.log("Incorrect password");
-//                     res.redirect('/admin/')
-//                 }
-//             } else {
-//                 req.flash('message', "You are not an Admin")
-//                 res.redirect('/admin/')
-//             }
-
-//         } else {
-//             console.log("Incorrect email");
-//             res.redirect('/admin/')
-//         }
-//     })
-// }
-
 exports.logincreate = (req, res) => {
-UserModel.findOne({
-    email: req.body.email
- }, (err,data)=>{
-    if (data) {
-        if (data.isAdmin == true ) {
-            const haspassword=data.password
-            if (bcrypt.compareSync(req.body.password , haspassword)) {
-                const token=jwt.sign({
-                    id:data._id,
-                    name:data.name,
-                    image:data.image
-                }, 'coffeeshop@2023' ,{expiresIn:'1h'})
-
-                console.log("show the name",data.name);
-                console.log("show the image",data.image);
-
-                res.cookie('AdminToken',token)
-                if (req.body.rememberme) {
-                    res.cookie('email',req.body.email)
-                    res.cookie('password',req.body.password)
+    UserModel.findOne({
+        email: req.body.email
+    }, (err, data) => {
+        if (data) {
+            if (data.isAdmin == true) {
+                const haspassword = data.password
+                if (bcrypt.compareSync(req.body.password, haspassword)) {
+                    const token = jwt.sign({
+                        id: data._id,
+                        name: data.name,
+                        image: data.image
+                    }, 'coffeeshop@2023', { expiresIn: '1h' })
+                    res.cookie('AdminToken', token)
+                    if (req.body.rememberme) {
+                        res.cookie('email', req.body.email)
+                        res.cookie('password', req.body.password)
+                    }
+                    console.log(data);
+                    req.flash('message', "You are Login Successfully")
+                    res.redirect('/admin/dashboard')
+                } else {
+                    console.log("Incorrect password");
+                    res.redirect('/admin/')
                 }
-                console.log(data);
-                req.flash('messege',"you r login successfully")
-                res.redirect('/admin/dashboard')
             } else {
-                console.log("incorrect password");
+                req.flash('message', "You are not an Admin")
                 res.redirect('/admin/')
-            }   
-        }else{
-            req.flash('message',"you are not an admin")
+            }
+
+        } else {
+            console.log("Incorrect email");
             res.redirect('/admin/')
         }
-        
-    } else{
-        console.log("incorrect email");
-        res.redirect('/admin/')
-    }
- })
+    })
 }
 
 
+
+
+
+
 exports.adminauth = (req, res, next) => {
-    if (!req.admin) {
-        console.log(req.admin, "aaa");
+    if (req.admin) {
+        console.log(req.admin,"aa");
         next();
     } else {
-        console.log(req.admin, "bbb");
+        console.log(req.admin,"bb");
         req.flash('message', "can not access this page ..please login first")
-        // console.log("can not access this page ..please login first")
         res.redirect('/admin/')
     }
 }

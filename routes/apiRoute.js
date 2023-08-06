@@ -20,7 +20,7 @@ Route.get('/profile/:id',ApiController.profile)
 //============Contact===========
 Route.post('/contact',ApiController.contact)
 
-// Route.get('/test',ApiController.auth,ApiController.test);
+// Route.get('/test',auth,ApiController.test);
 
 //============ADD TO CARD===========
 // Route.post('/addcart',ApiController.postAddToCart)

@@ -13,6 +13,8 @@ const port = process.env.PORT || 2100
 const ApiRoute = require('./routes/apiRoute')
 const AdminRoute = require('./routes/adminRouter')
 // const auth=require('./middleware/userAuth')
+const AdminAuth=require('./middleware/adminAuth')
+
 
 const dbLink = "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
 
@@ -67,9 +69,10 @@ app.use(multer({
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.use(ApiRoute)
-app.use(AdminRoute)
 // app.use(auth.veryfyToken)
+app.use(ApiRoute)
+app.use(AdminAuth.adminjwt)
+app.use(AdminRoute)
 
 app.use(express.static(path.join(__dirname, 'public')));
 

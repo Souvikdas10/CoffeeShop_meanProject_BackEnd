@@ -79,6 +79,7 @@ exports.login = async (req, res) => {
 }
 // exports.test=(req,res)=>{
 //     res.send({message:"you are Authenticated User"});
+//     console.log(test);
 // }
 
 //====================================Get Users==========================================================
