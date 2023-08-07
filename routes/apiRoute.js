@@ -26,4 +26,7 @@ Route.post('/contact',ApiController.contact)
 // Route.post('/addcart',ApiController.postAddToCart)
 // Route.get('/getcart',ApiController.getCART)
 
+//============BuyNow===========
+Route.post('/buynow',ApiController.BuyNow)
+
 module.exports = Route;

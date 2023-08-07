@@ -1,8 +1,9 @@
 const UserModel = require('../model/user');
 const itemModel = require('../model/coffeeItem');
 const ContactModel = require('../model/contact');
+const BuyNowModel = require('../model/buynow');
 // const AddModel=require('../model/add')
-const config=require('../config/config')
+const config = require('../config/config')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -46,8 +47,8 @@ exports.addUser = async (req, res) => {
             res.status(400).json({ success: false, message: "email already exist" });
         } else {
             const result = await user.save()
-            const token=await CreateToken(result._id);
-            res.status(200).json({ success: true, msg: "User Registered Successfully", data: result, status: 200,'token':token })
+            const token = await CreateToken(result._id);
+            res.status(200).json({ success: true, msg: "User Registered Successfully", data: result, status: 200, 'token': token })
         }
     } catch (error) {
         console.log(error);
@@ -63,19 +64,19 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
 
         if (!(email && password)) {
-            return res.status(401).json({ success: false, message: "All input are required", status:401 })
+            return res.status(401).json({ success: false, message: "All input are required", status: 401 })
         }
         const users = await UserModel.findOne({ email })
         if (users && (await bcryptjs.compare(password, users.password))) {
             const token = await CreateToken(users._id)
             return res.status(200).json({ success: true, msg: "Login....", "user": users, status: 200, token: token });
         }
-        return res.status(401).json({ success: false, message: "Invalid Credentials", status:401 });
+        return res.status(401).json({ success: false, message: "Invalid Credentials", status: 401 });
     }
     catch (error) {
         console.log(error);
     }
-   
+
 }
 // exports.test=(req,res)=>{
 //     res.send({message:"you are Authenticated User"});
@@ -116,7 +117,7 @@ exports.item = async (req, res) => {
 
         const item = await itemModel.find()
         // const item = await itemModel.find(req.params._id)
-        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: item , status:200 })
+        res.status(200).json({ success: true, msg: "Item fetch Successfully", data: item, status: 200 })
     } catch (error) {
         res.status(201).json({ success: false, msg: "Item Not fetch" })
 
@@ -127,30 +128,30 @@ exports.item = async (req, res) => {
 
 //====================================single data fatch============================================================
 
-exports.single=async(req,res)=>{
+exports.single = async (req, res) => {
     try {
-        const single_id= await itemModel.findById(req.params.id)
+        const single_id = await itemModel.findById(req.params.id)
         console.log(single_id);
-        res.status(200).json({success:true,msg:'single data fetch successfilly..!',data:single_id , status:200})
-        
+        res.status(200).json({ success: true, msg: 'single data fetch successfilly..!', data: single_id, status: 200 })
+
     } catch (error) {
-        res.status(201).json({success:false, msg:'data not fetched..!'})
-        
+        res.status(201).json({ success: false, msg: 'data not fetched..!' })
+
     }
 }
 
 //====================================profile============================================================
 
-exports.profile=async(req,res)=>{
+exports.profile = async (req, res) => {
     try {
-        const users_Profile= await UserModel.findById(req.params.id)
+        const users_Profile = await UserModel.findById(req.params.id)
         console.log(users_Profile);
-        res.status(200).json({success:true,msg:'profile fetch successfilly..!',data:users_Profile , status:200})
-        
+        res.status(200).json({ success: true, msg: 'profile fetch successfilly..!', data: users_Profile, status: 200 })
+
     } catch (error) {
         console.log(error);
-        res.status(201).json({success:false, msg:'profile not fetched..!'})
-        
+        res.status(201).json({ success: false, msg: 'profile not fetched..!' })
+
     }
 }
 //====================================ADD TO CARD============================================================
@@ -187,14 +188,14 @@ exports.profile=async(req,res)=>{
 //                 cartValue.push(itemforcart)
 //                 const cartitem=new AddModel({productId:pId,quantity:quantity,userId:userId,cart:cartValue})
 //                   cartitem.save()
-                
+
 //             })
 //         }
 //       })
 //     } catch (error) {
 //         console.log(error);
 //     }
-   
+
 
 // }
 // exports.getCART = async (req, res) => {
@@ -206,3 +207,32 @@ exports.profile=async(req,res)=>{
 
 //     }
 // }
+
+//====================================BuyNow============================================================
+
+exports.BuyNow = async (req, res) => {
+    try {
+        const buy = await new BuyNowModel({
+            name: req.body.name,
+            contact: req.body.contact,
+            address: req.body.address,
+            city: req.body.city,
+            state: req.body.state,
+            zip: req.body.zip,
+            cardholdername: req.body.cardholdername,
+            card: req.body.card,
+            expmonth: req.body.expmonth,
+            expyear: req.body.expyear,
+            cvv: req.body.cvv,
+            cod: req.body.cod,
+            UPI: req.body.UPI,
+
+        })
+        const result = await buy.save()
+        res.status(200).json({ success: true, msg: "sucessfully Order",Alldata:result ,status:200})
+
+    } catch (error) {
+        console.log(error);
+        res.status(201).json({ success: false, msg: "sucessfully not order" })
+    }
+}
