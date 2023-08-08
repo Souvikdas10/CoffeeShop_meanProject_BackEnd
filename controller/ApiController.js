@@ -198,6 +198,8 @@ exports.profile = async (req, res) => {
 
 
 // }
+//====================================Add to cart Get============================================================
+
 // exports.getCART = async (req, res) => {
 //     try {
 //         const  getcart= await AddModel.find()
