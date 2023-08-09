@@ -78,6 +78,9 @@ exports.login = async (req, res) => {
     }
 
 }
+
+//====================================Api auth==========================================================
+
 // exports.test=(req,res)=>{
 //     res.send({message:"you are Authenticated User"});
 //     console.log(test);
