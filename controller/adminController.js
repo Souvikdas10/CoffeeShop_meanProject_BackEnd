@@ -1,6 +1,7 @@
 const UserModel = require('../model/user');
 const ContactModel = require('../model/contact');
 const itemModel = require('../model/coffeeItem');
+const BuyNow = require('../model/buynow')
 const path = require('path');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -64,10 +65,10 @@ exports.logincreate = (req, res) => {
 
 exports.adminauth = (req, res, next) => {
     if (req.admin) {
-        console.log(req.admin,"aa");
+        console.log(req.admin, "aa");
         next();
     } else {
-        console.log(req.admin,"bb");
+        console.log(req.admin, "bb");
         req.flash('message', "can not access this page ..please login first")
         res.redirect('/admin/')
     }
@@ -85,16 +86,20 @@ exports.dashboard = (req, res) => {
     UserModel.find().then(result => {
         ContactModel.find().then(result1 => {
             itemModel.find().then(result2 => {
-                res.render('admin/dashboard', {
-                    title: 'Admin || Dashboard',
-                    data: req.admin,
-                    Users: result,
-                    contact: result1,
-                    item: result2
+                BuyNow.find().then(result3 => {
+                    res.render('admin/dashboard', {
+                        title: 'Admin || Dashboard',
+                        data: req.admin,
+                        Users: result,
+                        contact: result1,
+                        item: result2,
+                        buynow: result3,
+                    })
                 })
             })
         })
     })
+
 }
 
 exports.Users = (req, res) => {
@@ -147,7 +152,8 @@ exports.item = (req, res) => {
             title: 'Item Page',
             displayData: result,
             message: req.flash('message'),
-            error: req.flash('error')
+            error: req.flash('error'),
+            data: req.admin
 
         })
     })
@@ -182,6 +188,8 @@ exports.itemEdit = (req, res) => {
             title: 'Item Page',
             itemEditData: result,
             message: req.flash('message'),
+            data: req.admin,
+            
 
         })
     }).catch((err) => {
