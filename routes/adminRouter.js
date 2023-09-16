@@ -25,6 +25,7 @@ Route.post('/admin/itemUpdate',AdminController.itemUpdate)
 
 
 Route.get('/admin/delete/:id', AdminController.deletee)
+Route.get('/admin/contactdelete/:id', AdminController.contactDelete)
 
 
 

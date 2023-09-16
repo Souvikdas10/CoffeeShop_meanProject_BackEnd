@@ -241,13 +241,20 @@ exports.deactiveItem = (req, res) => {
     })
 }
 
-
-
 exports.deletee = (req, res) => {
     const sid = req.params.id
     UserModel.deleteOne({ _id: sid }).then(del => {
         res.redirect('/admin/users')
         console.log(del, "data deleted successfully")
+    }).catch(err => {
+        console.log(err)
+    })
+}
+exports.contactDelete=(req,res)=>{
+    const did = req.params.id
+    ContactModel.deleteOne({ _id: did }).then(del => {
+        res.redirect('/admin/contact')
+        console.log(del, "Contact deleted successfully")
     }).catch(err => {
         console.log(err)
     })

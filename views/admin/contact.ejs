@@ -44,6 +44,7 @@
                                             <th>Message</th>
 
                                             <th>Contact Time</th>
+                                            <th>Operation</th>
                                             
                                             
                                         </tr>
@@ -60,6 +61,7 @@
                                             <td><%=data2.contact%></td>
                                             <td><%=data2.message%></td>
                                             <td><%=data2.createdAt.toDateString()%></td>
+                                            <td><a href="/admin/contactDelete/<%=data2._id%>" class="btn btn-danger">Delete</a></td>
                                         </tr>
                                         <%}}%>
                                         
