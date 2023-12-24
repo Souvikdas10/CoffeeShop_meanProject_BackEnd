@@ -16,7 +16,8 @@ const AdminRoute = require('./routes/adminRouter')
 const AdminAuth=require('./middleware/adminAuth')
 
 
-const dbLink = "mongodb+srv://souvikdb:cSgmsmo8GCvTW05X@cluster0.bsndvpo.mongodb.net/ShopC";
+const dbLink = "mongodb+srv://souvikdb:1V8UhcbKfOpXCGpS@cluster0.bsndvpo.mongodb.net/ShopC";
+// const dbLink = "mongodb+srv://souvikdb:422S3OBn1WwACgMH@cluster0.bsndvpo.mongodb.net/ShopC";
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
